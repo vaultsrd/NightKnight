@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10131a">
+  <title>NightKnight — Analisis Catur</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">♞</span><span>night<span class="accent">knight</span><small>CHESS ANALYSIS STUDIO</small></span></a>
+    <div class="top-actions"><span class="engine-status"><i id="engineDot"></i><span id="engineStatus">Menyiapkan engine…</span></span><button class="btn btn-quiet" id="flipBtn" title="Balik papan">⇅ <span>Balik papan</span></button></div>
+  </header>
+  <main class="layout">
+    <section class="board-panel panel">
+      <div class="panel-head"><div><span class="eyebrow">PAPAN ANALISIS</span><h1>Ruang berpikir.</h1></div><span class="live-pill"><i></i> LIVE</span></div>
+      <div class="board-wrap">
+        <div class="eval-track" title="Evaluasi dari sudut pandang Putih"><div id="evalFill"></div><span id="evalBlack">−</span><span id="evalWhite">+</span></div>
+        <div class="board-area"><div class="coordinates" id="coordinates"></div><div class="board" id="board" role="grid" aria-label="Papan catur"></div></div>
+      </div>
+      <div class="board-foot"><span id="turnLabel">Putih melangkah</span><span id="positionLabel">Posisi awal</span></div>
+      <div class="board-controls">
+        <button class="btn btn-quiet icon-btn" id="startBtn" title="Ke awal">|◀</button><button class="btn btn-quiet icon-btn" id="prevBtn" title="Langkah sebelumnya">◀</button><button class="btn btn-primary icon-btn" id="nextBtn" title="Langkah berikutnya">▶</button><button class="btn btn-quiet icon-btn" id="endBtn" title="Ke posisi terakhir">▶|</button><span class="control-spacer"></span><button class="btn btn-quiet" id="undoBtn">↶ Urungkan</button><button class="btn btn-quiet" id="resetBtn">Reset</button>
+      </div>
+      <div class="move-strip"><span class="eyebrow">LANGKAH TERAKHIR</span><strong id="lastMove">—</strong><span id="checkLabel"></span></div>
+    </section>
+    <aside class="side-column">
+      <section class="panel engine-panel">
+        <div class="panel-head compact"><div><span class="eyebrow">STOCKFISH ENGINE</span><h2>Analisis posisi</h2></div><span class="engine-badge" id="engineBadge">WASM</span></div>
+        <div class="eval-summary"><div><span class="eyebrow">EVALUASI</span><strong id="evalScore">0.00</strong><small id="evalPerspective">Sudut pandang Putih</small></div><div class="depth-ring"><strong id="depthValue">0</strong><small>DEPTH</small></div></div>
+        <div class="pv-box"><div class="pv-head"><span class="eyebrow">KANDIDAT TERBAIK</span><span id="analysisState">Menunggu engine</span></div><div id="candidates" class="candidates"><div class="empty-state">Menunggu Stockfish…</div></div></div>
+        <div class="engine-options"><label for="depthSelect">Kedalaman maksimum</label><select id="depthSelect"><option value="10">10 ply · Cepat</option><option value="14" selected>14 ply · Seimbang</option><option value="18">18 ply · Dalam</option><option value="22">22 ply · Sangat dalam</option></select></div>
+        <div class="engine-options"><label for="linesSelect">Jumlah kandidat</label><select id="linesSelect"><option value="1">1 jalur</option><option value="2">2 jalur</option><option value="3" selected>3 jalur</option></select></div>
+        <div class="engine-note"><span>●</span> Analisis lokal di browser · tanpa server</div>
+      </section>
+      <section class="panel history-panel">
+        <div class="panel-head compact"><div><span class="eyebrow">NOTASI</span><h2>Riwayat langkah</h2></div><span id="moveCount" class="count-badge">0 ply</span></div>
+        <div id="moveHistory" class="move-history"><div class="empty-state">Langkah akan muncul di sini.</div></div>
+        <div class="history-actions"><button class="btn btn-quiet" id="copyPgnBtn">Salin PGN</button><button class="btn btn-quiet" id="downloadPgnBtn">↓ PGN</button></div>
+      </section>
+    </aside>
+    <section class="panel import-panel">
+      <div class="panel-head compact"><div><span class="eyebrow">POSISI & PARTAI</span><h2>Impor FEN / PGN</h2></div><span class="eyebrow">PORTABLE GAME NOTATION</span></div>
+      <div class="import-grid"><div><label for="fenInput">FEN · posisi tunggal</label><textarea id="fenInput" rows="2" spellcheck="false" placeholder="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"></textarea><button class="btn btn-primary" id="loadFenBtn">Muat FEN</button></div><div><label for="pgnInput">PGN · seluruh partai</label><textarea id="pgnInput" rows="2" spellcheck="false" placeholder='[Event "Casual Game"]&#10;1. e4 e5 2. Nf3 Nc6'></textarea><button class="btn btn-primary" id="loadPgnBtn">Muat PGN</button></div></div><p id="importMessage" class="import-message" role="status">Papan menerima klik atau drag-and-drop. Langkah ilegal otomatis ditolak.</p>
+    </section>
+  </main>
+  <footer><span>NightKnight · dibuat untuk belajar dan analisis</span><span>Gunakan hanya di partai yang mengizinkan engine.</span></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-9J2j7q4t5Z6c1Y8rQ0c6M4p5N8a3b2v1x7w9K0m2R5s6D8f1G3h4J7k9L0p2Q5r6S8t1V3x4Y7z9A0b2C5d6E==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
